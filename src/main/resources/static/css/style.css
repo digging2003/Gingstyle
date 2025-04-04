@@ -1,0 +1,185 @@
+a {
+    text-decoration: none;
+}
+
+.banner {
+    background-color: #ff7f50; /* 쿠폰 배경색 */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    font-size: 16px;
+    position: sticky; /* 스크롤 시 자연스럽게 올라가도록 sticky 사용 */
+    top: 0;
+    z-index: 1050; /* 헤더보다 높은 z-index로 설정 */
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1040; /* 쿠폰 배너보다 아래로 설정 */
+    background-color: white; /* 헤더 배경색 */
+}
+
+body {
+    font-family: 'Noto Sans KR', sans-serif;
+    color: #333;
+    padding-top: 75px;
+}
+
+.logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 35px;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    color: #d0a0a4;
+}
+
+.menu {
+    color: #666;
+    font-size: 14px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+.menu:hover {
+    color: #d8b6b6 !important;
+    font-style: italic;
+}
+
+.menu:visited {
+    color: #666; /* 클릭 후 방문한 링크도 검은색 */
+}
+
+.icon {
+    font-size: 18px;  /* 주변 글씨 크기와 비슷하게 조정 */
+    margin: 0 10px;  /* 좌우 여백 추가 */
+    color: #666;  /* 기본 색상 설정 */
+    cursor: pointer;  /* 클릭 가능하게 변경 */
+}
+
+.product-text {
+    font-size: 14px;
+    margin-top: 8px;
+}
+
+.original-price {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 12px;
+}
+
+.pagination {
+    display: inline-flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.page-item {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+.page-link {
+    text-decoration: none;  /* 링크 밑줄 제거 */
+    color: #888;  /* 글자 색 */
+    font-size: 10px;
+    cursor: pointer;
+    padding: 5px 10px;  /* 숫자 크기 및 여백 */
+    background: none;  /* 배경 없애기 */
+    border: none;  /* 테두리 없애기 */
+}
+
+.page-link:hover {
+    color: #333;  /* 마우스 올리면 색상 변경 */
+}
+
+.page-item.active .page-link {
+    color: #333;  /* 활성화된 숫자 색상 */
+}
+
+footer {
+    width: 100%;
+    background-color: #f3e9ea;
+    color: #666;
+    font-size: 14px;
+    font-style: italic;
+    height: 200px;
+    text-align: center;
+    padding-top: 10px;
+}
+
+.line {
+    width: 100%;  /* 점선의 길이 */
+    height: 3px;  /* 점선의 두께 */
+    background-image: repeating-linear-gradient(
+        to right, 
+        rgb(177, 161, 161),  /* 점의 색상 */
+        rgb(177, 161, 161) 7px,  /* 점의 길이 */
+        transparent 5px, 
+        transparent 10px  /* 점과 점 사이의 간격 */
+    );
+    margin: 0px 5px;  /* 위 아래 여백 */
+}
+
+
+
+/* 로그인화면 css */
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 70px); /* 푸터 제외한 높이 */
+    background-color: #ffffff;
+}
+
+
+.login-box h5 {
+    color: #333;
+    font-weight: 100; 
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 600px;
+}
+
+.login-box .form-control {
+    border-radius: 0px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.login-box .btn-primary {
+    background-color: #f3e9ea;
+    border: none;
+    padding: 15px 20px;
+    margin-top: 20px;
+    border-radius: 0px;
+    width: 100%;
+    color: #333;
+}
+
+.login-box .btn-primary:hover {
+    background-color: #eddfe0;
+    color: #333;
+}
+
+.login-box a {
+    font-size: 14px;
+    color: #d7d7d7;
+    text-decoration:underline;
+}
+
+.login-box a:hover {
+    color: #757575;
+    transition: all 0.3s ease-in-out;
+}
+
+input::placeholder {
+    color: #d7d7d7;  /* 회색 */
+    font-size: 14px;  /* 글씨 크기 */
+    font-weight: 300;  /* 얇은 글씨 */
+}
