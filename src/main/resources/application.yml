@@ -2,7 +2,7 @@ spring:
     config:
         import: security-variable.yml
     application:
-        name: Gingstagram
+        name: Gingstyle
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
         url: jdbc:mysql://localhost:3306/gingstyle

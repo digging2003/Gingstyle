@@ -6,23 +6,68 @@
  	<main layout:fragment="contents" class="login-container">
         <div class="login-box text-center">
             <h5>Create Account</h5>
-            <form>
+            <div>
                 <div class="mb-3">
-                    <input type="text" class="form-control" id="name" placeholder="이름">
+                    <input type="text" class="form-control" id="nameInput" placeholder="이름">
                 </div>
                 <div class="mb-3">
-                    <input type="email" class="form-control" id="email" placeholder="이메일">
+                    <input type="text" class="form-control" id="emailInput" placeholder="이메일">
                 </div>
                 <div class="mb-3">
-                    <input type="password" class="form-control" id="password" placeholder="비밀번호">
+                    <input type="password" class="form-control" id="passwordInput" placeholder="비밀번호">
                 </div>
                 <div>
-                    <button type="submit" class="btn btn-primary">create</button>
+                    <button type="button" class="btn btn-primary" id="joinBtn">create</button>
                 </div>
-            </form>
+            </div>
             <div class="mt-3">
                 <a href="/user/login-view">login</a>
             </div>
         </div>
     </main>
+    
+        <script layout:fragment="script">
+			$(function() {
+				
+				
+				$("#joinBtn").on("click", function() {
+					let name = $("#nameInput").val();
+					let email = $("#emailInput").val();
+					let password = $("#passwordInput").val();
+					
+					if(name == "") {
+						alert("이름을 입력하세요");
+						return ;
+					}
+					
+					if(email == "") {
+						alert("이메일을 입력하세요");
+						return ;
+					}
+					
+					if(password == "") {
+						alert("비밀번호를 입력하세요");
+						return ;
+					}
+					
+					$.ajax({
+						type:"post"
+						, url:"/user/join"
+						, data:{"name":name, "email":email, "password":password}
+						, success:function(response) {
+							if(response.result == "success") {
+								alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+								location.href = "/user/login-view";
+							} else {
+								alert("회원 가입 실패!!");
+							}
+						}
+						, error:function() {
+							alert("회원가입 에러!!");
+						}
+					});
+				});
+			});
+		
+		</script>
 </html>
