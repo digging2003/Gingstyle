@@ -3,6 +3,7 @@ package com.digging.gingstyle.user;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -24,6 +25,22 @@ public class UserRestController {
 		this.userService = userService;
 	}
 	
+	// 중복 확인 API
+	@GetMapping("/duplicate-email")
+	public Map<String, Boolean> duplicate(@RequestParam String email) {
+		
+		Map<String, Boolean> resultMap = new HashMap<>();
+		
+		User duplicateUser = userService.duplicateEmail(email);
+		
+		if(duplicateUser != null) {
+			resultMap.put("isDuplicate", true);
+		} else {
+			resultMap.put("isDuplicate", false);
+		}
+		
+		return resultMap;
+	}
 	
 	// 회원 가입 API
 	@PostMapping("/join")

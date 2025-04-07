@@ -14,6 +14,12 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 	
 	private final UserRepository userRepository;
+	
+	// 중복확인 api
+	public User duplicateEmail(String email) {
+		
+		return userRepository.findByEmail(email);
+	}
 
 	public boolean addUser(String name, String email, String password) {
 		
@@ -24,8 +30,6 @@ public class UserService {
 				.email(email)
 				.password(encyptPassword)
 				.build();
-		
-		userRepository.save(user);
 		
 		try {
 			userRepository.save(user);

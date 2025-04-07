@@ -1,0 +1,41 @@
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/admin}">
+        
+        
+         <main layout:fragment="contents" class="content">
+            <header class="admin-header d-flex justify-content-between p-3">
+                <h3>대시보드</h3>
+                <button class="btn">로그아웃</button>
+            </header>
+            <section class="dashboard-content p-4">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">총 상품</h5>
+                                <p class="card-text">120개</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">총 주문</h5>
+                                <p class="card-text">85건</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">배송 중</h5>
+                                <p class="card-text">15건</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+</html>

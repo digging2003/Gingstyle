@@ -121,6 +121,12 @@ footer {
     margin: 0px 5px;  /* 위 아래 여백 */
 }
 
+#duplicate {
+	color: #ff0000;
+    text-align: start;
+    font-size: 14px;
+}
+
 
 
 /* 로그인화면 css */

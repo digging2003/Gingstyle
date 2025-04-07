@@ -17,6 +17,7 @@
                     <input type="password" class="form-control" id="passwordInput" placeholder="비밀번호">
                 </div>
                 <div>
+                	<div id="duplicate" class="text-danger d-hidden">중복된 이메일 입니다.</div>
                     <button type="button" class="btn btn-primary" id="joinBtn">create</button>
                 </div>
             </div>
@@ -29,6 +30,7 @@
         <script layout:fragment="script">
 			$(function() {
 				
+
 				
 				$("#joinBtn").on("click", function() {
 					let name = $("#nameInput").val();
@@ -49,6 +51,23 @@
 						alert("비밀번호를 입력하세요");
 						return ;
 					}
+					
+					$.ajax({
+						type:"Get"
+						, url:"/user/duplicate-email"
+						, data:{"email":email}
+						, success:function(response) {
+							if(response.isDuplicate == true) {
+								$("#duplicate").show();
+								return ;
+							} else {
+							}
+						}
+						, error:function() {
+							alert("중복 확인 에러!!");
+							return ;
+						}
+					});
 					
 					$.ajax({
 						type:"post"
