@@ -3,7 +3,6 @@ package com.digging.gingstyle.products.domain;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,58 +14,30 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Builder(toBuilder=true)
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Table(name="`products`")
+@Table(name="`image`")
 @Entity
-public class Products {
+public class Image {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 	
-	private String name;
-	private String discription;
-	private int beforePrice; 
-	private int price;
-	private int stock;
-	private int categoryId;
+	private int productId;
 	private String imagePath;
-	
+
 	@CreationTimestamp
 	private LocalDateTime createdAt;
-	
-	@UpdateTimestamp
-	private LocalDateTime updatedAt;
 
 	public void setId(int id) {
 		this.id = id;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setDiscription(String discription) {
-		this.discription = discription;
-	}
-
-	public void setBeforePrice(int beforePrice) {
-		this.beforePrice = beforePrice;
-	}
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-	public void setStock(int stock) {
-		this.stock = stock;
-	}
-
-	public void setCategoryId(int categoryId) {
-		this.categoryId = categoryId;
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
 
 	public void setImagePath(String imagePath) {
@@ -75,10 +46,6 @@ public class Products {
 
 	public void setCreatedAt(LocalDateTime createdAt) {
 		this.createdAt = createdAt;
-	}
-
-	public void setUpdatedAt(LocalDateTime updatedAt) {
-		this.updatedAt = updatedAt;
 	}
 	
 	

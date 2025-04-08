@@ -1,16 +1,25 @@
- <header class="d-flex align-items-center justify-content-between py-4 px-5 fixed-top bg-white">
+<header class="d-flex align-items-center justify-content-between py-4 px-5 fixed-top bg-white">
             <a href="#"><div class="logo">gingstyle</div></a>
             <div class="d-flex">
                 <nav class="m-auto"> <!-- ml-auto 추가 -->
                     <ul class="nav">
                         <li class="nav-item"><a class="nav-link menu" href="#">NEW</a></li>
                         <li class="nav-item"><a class="nav-link menu" href="#">BEST THINGS</a></li>
-                        <li class="nav-item"><a class="nav-link menu" href="#">SHOP ALL</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link menu dropdown-toggle" href="#">SHOP ALL</a>
+                            <div class="dropdown-menu custom-dropdown">
+                              <a class="dropdown-item" href="/product?categoryId=0">ALL</a>
+                              <a class="dropdown-item" href="/product?categoryId=1">OUTERS</a>
+                              <a class="dropdown-item" href="/product?categoryId=2">TOP</a>
+                              <a class="dropdown-item" href="/product?categoryId=3">BOTTOM</a>
+                              <a class="dropdown-item" href="/product?categoryId=4">DRESSES</a>
+                            </div>
+                          </li>
                     </ul>
                 </nav>
                 <div class="mx-3 d-flex align-items-center">
-                    <a href="/user/join-view"><i class="icon bi bi-pencil"></i></a>  <!-- 연필 아이콘 -->
-                    <a href="/user/login-view"><i class="icon bi bi-emoji-smile"></i></a>  <!-- 스마일 아이콘 -->
+                    <i class="icon bi bi-pencil"></i>  <!-- 연필 아이콘 -->
+                    <i class="icon bi bi-emoji-smile"></i>  <!-- 스마일 아이콘 -->
                     <i class="icon bi bi-cart"></i>  <!-- 장바구니 아이콘 -->
                 </div>
             </div>

@@ -79,8 +79,9 @@ public class UserRestController {
 			// 로그인 성공 이후 사용자 정보를 session에 저장한다. 
 			// session은 특정 클라이언트의 정보를 저장한다.
 			// 다른 요청에서도 같은 클라이언트라면 해당 값을 사용할 수 있다.
-			session.setAttribute("name", user.getName());
-			session.setAttribute("email", user.getEmail());
+			session.setAttribute("userId", user.getId());
+			session.setAttribute("userName", user.getName());
+			session.setAttribute("userEmail", user.getEmail());
 			
 			resultMap.put("result", "success");
 		} else {

@@ -1,0 +1,44 @@
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/default}">
+        
+	 <main layout:fragment="contents" class="m-5">
+            <nav class="my-3">
+                <ul class="nav category-nav">
+                    <li class="nav-item"><a class="nav-link" href="/product?categoryId=0">ALL</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product?categoryId=1">OUTERS</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product?categoryId=2">TOP</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product?categoryId=3">BOTTOM</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/product?categoryId=4">DRESSES</a></li>
+                </ul>
+            </nav>
+            <div class="row g-2">
+                <div class="col-md-3 col-sm-6 text-center">
+                    <img src="black-shirt.jpg" class="img-fluid" alt="Bunny&Doll Jewel-T long (Black)">
+                    <div class="product-text">Bunny&Doll Jewel-T long (Black)<br>₩44,000</div>
+                </div>
+            </div>
+
+            <div class="row g-2">
+                <div class="col-md-3 col-sm-6 text-center">
+                    <img src="black-shirt.jpg" class="img-fluid" alt="Bunny&Doll Jewel-T long (Black)">
+                    <div class="product-text">Bunny&Doll Jewel-T long (Black)<br>₩44,000</div>
+                </div>
+            </div>
+
+            <div class="pagination-container text-center mt-5">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item"><a class="page-link" href="#">«</a></li>
+                        <li class="page-item"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">4</a></li>
+                        <li class="page-item"><a class="page-link" href="#">»</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </main>
+	
+</html>

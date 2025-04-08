@@ -1,0 +1,47 @@
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/default}">
+        
+     <main layout:fragment="contents" class="container my-5">
+          <h4 class="mb-4">장바구니</h4>
+          
+          <div class="table-responsive">
+              <table class="table align-middle text-center">
+                  <thead class="table-light">
+                      <tr>
+                          <th></th>
+                          <th>이름</th>
+                          <th>가격</th>
+                          <th>수량</th>
+                          <th>총액</th>
+                          <th></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <tr>
+                          <td><img src="black-shirt.jpg" alt="상품1" width="80"></td>
+                          <td>Bunny&Doll Jewel-T long (Black)</td>
+                          <td>₩44,000</td>
+                          <td>1</td>
+                          <td>₩44,000</td>
+                          <td><i class="icon bi bi-trash"></i></td>
+                      </tr>
+                      <tr>
+                          <td><img src="pink-shirt.jpg" alt="상품2" width="80"></td>
+                          <td>Bunny&Doll skirt pants</td>
+                          <td>₩89,000</td>
+                          <td>2</td>
+                          <td>₩89,000</td>
+                          <td><i class="icon bi bi-trash"></i></td>
+                      </tr>
+                  </tbody>
+              </table>
+          </div>
+      
+          <div class="text-end mt-4">
+              <h5>총 주문금액 : <strong>₩133,000</strong></h5>
+              <button class="btn btn-dark mt-2">주문하기</button>
+          </div>
+      </main> 
+</html>

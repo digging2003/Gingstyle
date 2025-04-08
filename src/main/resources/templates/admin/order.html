@@ -1,0 +1,43 @@
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/admin}">
+        
+	<main layout:fragment="contents" class="content">
+	    <header class="admin-header d-flex justify-content-between p-3">
+	        <h3>배송 관리</h3>
+	        <button class="btn">로그아웃</button>
+	    </header>
+	    <section class="admin-section p-4">
+	        <h4>배송 현황</h4>
+	        <table class="table table-striped shipping-table">
+	            <thead>
+	                <tr>
+	                    <th>주문번호</th>
+	                    <th>수령인</th>
+	                    <th>주소</th>
+	                    <th>배송 상태</th>
+	                    <th>관리</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <tr>
+	                    <td>#1</td>
+	                    <td>이름이</td>
+	                    <td>서울</td>
+	                    <td>배송중</td>
+	                    <td><button class="btn btn-sm btn-outline-success">상세</button></td>
+	                </tr>
+	                <tr>
+	                    <td>#2</td>
+	                    <td>름이름</td>
+	                    <td>부산</td>
+	                    <td>배송완료</td>
+	                    <td><button class="btn btn-sm btn-outline-success">상세</button></td>
+	                </tr>
+	            </tbody>
+	        </table>
+	    </section>
+	</main>
+	
+</html>

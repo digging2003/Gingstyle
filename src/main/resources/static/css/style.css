@@ -20,6 +20,65 @@ header {
     background-color: white; /* 헤더 배경색 */
 }
 
+.container {
+    min-height: calc(100vh - 70px);
+}
+
+/* 카테고리별 메뉴바 */
+.category-nav .nav-link {
+    font-size: 15px;
+    color: #8c8c8c;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.2s ease-in-out;
+  }
+.category-nav .nav-link.active {
+border-bottom: 2px solid black;
+}
+
+/* 드롭다운 포함 항목 설정 */
+.nav-item.dropdown {
+    position: relative;
+  }
+
+/* 드롭다운 메뉴 설정 */
+.nav-item.dropdown .dropdown-menu {
+display: block;
+opacity: 0;
+visibility: hidden;
+position: absolute;
+top: 100%; /* SHOP ALL 바로 아래 */
+left: 0; /* SHOP ALL의 왼쪽과 맞춤 */
+z-index: 1000;
+transition: opacity 0.3s ease;
+background-color: white;
+border: none;
+padding: 10px 0;
+min-width: 160px;
+font-size: 14px;
+text-align: left;
+white-space: nowrap;
+}
+
+/* 드롭다운 항목 스타일 */
+.dropdown-menu .dropdown-item {
+padding: 8px 20px;
+color: #666;
+transition: background-color 0.2s;
+}
+
+.dropdown-menu .dropdown-item:hover {
+background-color: #f8f2f3;
+color: #333;
+font-weight: 500;
+}
+
+/* hover 시 보이게 */
+.nav-item.dropdown:hover .dropdown-menu {
+opacity: 1;
+visibility: visible;
+}
+
+
 body {
     font-family: 'Noto Sans KR', sans-serif;
     color: #333;
@@ -121,12 +180,6 @@ footer {
     margin: 0px 5px;  /* 위 아래 여백 */
 }
 
-#duplicate {
-	color: #ff0000;
-    text-align: start;
-    font-size: 14px;
-}
-
 
 
 /* 로그인화면 css */
@@ -189,3 +242,11 @@ input::placeholder {
     font-size: 14px;  /* 글씨 크기 */
     font-weight: 300;  /* 얇은 글씨 */
 }
+
+#duplicate {
+	color: #ff0000;
+    text-align: start;
+    font-size: 14px;
+}
+
+

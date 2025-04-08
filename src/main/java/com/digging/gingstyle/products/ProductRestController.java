@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.digging.gingstyle.products.service.ProductsService;
+import com.digging.gingstyle.products.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor // final이 부여된 멤버변수만
 @RequestMapping("/admin")
 @RestController
-public class ProductsRestController {
+public class ProductRestController {
 	
-	private final ProductsService productsService;
+	private final ProductService productsService;
 	
 	// 관리자 관련 - 제품 등록 API
 	@PostMapping("/product/create")
@@ -33,7 +33,7 @@ public class ProductsRestController {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productsService.addProduct(name, discription, beforePrice, price, stock, categoryId, imagePath)) {
+		if(productsService.addProduct(name, discription, beforePrice, price, stock, categoryId)) {
 			// 성공
 			resultMap.put("result", "success");
 		} else {
@@ -53,12 +53,11 @@ public class ProductsRestController {
 			, @RequestParam int beforePrice
 			, @RequestParam int price
 			, @RequestParam int stock
-			, @RequestParam int categoryId
-			, @RequestParam String imagePath) {
+			, @RequestParam int categoryId) {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productsService.updateProduct(id, name, discription, beforePrice, price, stock, categoryId, imagePath)) {
+		if(productsService.updateProduct(id, name, discription, beforePrice, price, stock, categoryId)) {
 			resultMap.put("result", "success");
 		} else {
 			resultMap.put("result", "fail");
