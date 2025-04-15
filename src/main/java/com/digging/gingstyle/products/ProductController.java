@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.digging.gingstyle.products.domain.Product;
+import com.digging.gingstyle.products.dto.Detail;
 import com.digging.gingstyle.products.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -21,12 +21,12 @@ public class ProductController {
 	
 	// 사용자 관련 - 카테고리별 상품리스트 조회 API
 	@GetMapping
-	public String getProducts(@RequestParam int categoryId
+	public String getProducts(@RequestParam(required=false) Integer categoryId
 			, Model model) {
 		
-		List<Product> productList = productService.getProductList(categoryId);
+		List<Detail> detailList = productService.getDetailView(categoryId);
 		
-		model.addAttribute("productList", productList);
+		model.addAttribute("detailList", detailList);
 		
 		return "product/category";
 	}

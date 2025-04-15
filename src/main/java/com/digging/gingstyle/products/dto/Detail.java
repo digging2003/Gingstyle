@@ -16,6 +16,7 @@ public class Detail {
 	private int beforePrice; 
 	private int price;
 	private List<Image> imageList;
+	private String mainImagePath;
 	private int categoryId;
 	
 	// 상품 상세페이지에 필요한 정보

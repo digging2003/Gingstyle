@@ -14,9 +14,12 @@
                 </ul>
             </nav>
             <div class="row g-2">
-                <div class="col-md-3 col-sm-6 text-center">
-                    <img src="black-shirt.jpg" class="img-fluid" alt="Bunny&Doll Jewel-T long (Black)">
-                    <div class="product-text">Bunny&Doll Jewel-T long (Black)<br>₩44,000</div>
+                <div class="col-md-3 col-sm-6 text-center" th:each="detail:${detailList}">
+                    <img src="${detail.mainImagePath}" class="img-fluid" th:alt="${detail.name}">
+                    <div class="product-text">
+                    	<span th:text="${detail.name}">제품이름</span>
+                    	<br>
+                    	₩<span th:text="${detail.price}">제품가격</span></div>
                 </div>
             </div>
 
