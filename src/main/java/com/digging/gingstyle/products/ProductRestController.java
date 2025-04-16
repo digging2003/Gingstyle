@@ -19,7 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 public class ProductRestController {
 	
-	private final ProductService productsService;
+	private final ProductService productService;
 	
 	// 관리자 관련 - 제품 등록 API
 	@PostMapping("/product/create")
@@ -33,7 +33,7 @@ public class ProductRestController {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productsService.addProduct(name, discription, beforePrice, price, stock, categoryId)) {
+		if(productService.addProduct(name, discription, beforePrice, price, stock, categoryId)) {
 			// 성공
 			resultMap.put("result", "success");
 		} else {
@@ -52,7 +52,7 @@ public class ProductRestController {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productsService.addImage(productId, imagePath)) {
+		if(productService.addImage(productId, imagePath)) {
 			// 성공
 			resultMap.put("result", "success");
 		} else {
@@ -77,7 +77,7 @@ public class ProductRestController {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productsService.updateProduct(id, name, discription, beforePrice, price, stock, categoryId)) {
+		if(productService.updateProduct(id, name, discription, beforePrice, price, stock, categoryId)) {
 			resultMap.put("result", "success");
 		} else {
 			resultMap.put("result", "fail");
@@ -93,7 +93,7 @@ public class ProductRestController {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productsService.deleteProduct(id)) {
+		if(productService.deleteProduct(id)) {
 			resultMap.put("result", "success");
 		} else {
 			resultMap.put("result", "fail");
@@ -109,7 +109,7 @@ public class ProductRestController {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productsService.deleteImage(id)) {
+		if(productService.deleteImage(id)) {
 			resultMap.put("result", "success");
 		} else {
 			resultMap.put("result", "fail");

@@ -24,7 +24,7 @@ public class ProductController {
 	public String getProducts(@RequestParam(required=false) Integer categoryId
 			, Model model) {
 		
-		List<Detail> detailList = productService.getDetailView(categoryId);
+		List<Detail> detailList = productService.getCategoryView(categoryId);
 		
 		model.addAttribute("detailList", detailList);
 		
@@ -33,8 +33,12 @@ public class ProductController {
 	
 	// 사용자 관련 - 상품 상세페이지 조회 API
 	@GetMapping("/detail")
-	public String productDetail() {
+	public String productDetail(@RequestParam int productId
+			, Model model) {
 		
+		Detail detail = productService.getDetailView(productId);
+		
+		model.addAttribute("detail", detail);
 		
 		return "product/detail";
 	}

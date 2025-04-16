@@ -169,7 +169,7 @@ public class ProductService {
 	}
 	
 	// 사용자 관련 - 카테고리Id로 페이지 조회 기능
-	public List<Detail> getDetailView(Integer categoryId) {
+	public List<Detail> getCategoryView(Integer categoryId) {
 		
 		List<Product> productList = new ArrayList<>();
 		
@@ -185,7 +185,7 @@ public class ProductService {
 
 			int productId = product.getId();
 			List<Image> imageList = imageRepository.findByProductId(productId);
-			String mainImagePath = imageList.get(0).getImagePath();
+			String mainImagePath = imageRepository.findTopByProductId(productId).getImagePath();
 			
 			Detail detail = Detail.builder()
 					.name(product.getName())
@@ -205,4 +205,25 @@ public class ProductService {
 		
 	}
 	
+	public Detail getDetailView(int productId) {
+		Optional<Product> optionalProduct = productRepository.findById(productId);
+		Product product = optionalProduct.get();
+		
+		List<Image> imageList = imageRepository.findByProductId(productId);
+		String mainImagePath = imageRepository.findTopByProductId(productId).getImagePath();
+		
+		Detail detail = Detail.builder()
+				.name(product.getName())
+				.beforePrice(product.getBeforePrice())
+				.price(product.getPrice())
+				.imageList(imageList)
+				.mainImagePath(mainImagePath)
+				.categoryId(product.getCategoryId())
+				.discription(product.getDiscription())
+				.stock(product.getStock())
+				.build();
+		
+		return detail;
+		
+	}
 }
