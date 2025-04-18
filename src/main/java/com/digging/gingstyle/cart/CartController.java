@@ -25,6 +25,11 @@ public class CartController {
 			HttpSession session
 			, Model model) {
 		
+		if(session.getAttribute("userId") == null) {
+			
+			return "user/login"; // 비회원일 경우 로그인 페이지로 이동
+		}
+		
 		int userId = (Integer) session.getAttribute("userId");
 		
 		List<CartView> cartView = cartService.getCartList(userId);

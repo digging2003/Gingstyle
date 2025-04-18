@@ -4,10 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.digging.gingstyle.order.domain.Order;
 import com.digging.gingstyle.order.service.OrderService;
 
 import jakarta.servlet.http.HttpSession;
@@ -22,16 +23,14 @@ public class OrderRestController {
 	// 사용자 관련 - 주문 등록 API
 	@PostMapping("/add")
 	public Map<String, String> addOrder(
-			@RequestParam int totalPrice
-			, @RequestParam String address
-			, @RequestParam String payment
+			@RequestBody Order order
 			, HttpSession session) {
 		
 		int userId = (Integer)session.getAttribute("userId");
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(orderService.addOrder(userId, totalPrice, address, payment)) {
+		if(orderService.addOrder(userId, order)) {
 			// 성공
 			resultMap.put("result", "success");
 		} else {

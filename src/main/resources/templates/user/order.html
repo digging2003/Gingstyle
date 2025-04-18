@@ -1,10 +1,49 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
 
-</body>
+<html lang="ko" 
+    xmlns:th="http://www.thymeleaf.org" 
+        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layouts/default}">
+        
+	<main layout:fragment="contents">
+	</main>
+
+
+    
+    <script layout:fragment="script">
+	    $(function() {
+			
+			$("#loginBtn").on("click", function() {
+				
+				
+				$.ajax({
+					type:"post"
+					, url:"/order/add"
+					, contentType:"application/json" // 백엔드에서 @RequestBody로 객체를 바로 받을 수 있음
+					, data:JSON.stringify({ // 백엔드에서 @RequestBody로 객체를 바로 받을 수 있음
+						userId:null
+						, totalPrice:totalPrice
+						, address:address
+						, status:"pending"
+						, payment:payment
+						, orderItems:[
+							{productId:1, quantity:2}
+							, {productId:2, quantity:1}
+						]
+					})
+					, success:function(response) {
+						if(response.result == "success") {
+							alert("주문 완료");
+						} else {
+							alert("주문 실패!!");
+						}
+					}
+					, error:function() {
+						alert("주문 에러!!");
+					}
+				});
+			});
+		});
+	    
+    </script>
+
 </html>

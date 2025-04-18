@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.digging.gingstyle.cart.dto.CartView;
+import com.digging.gingstyle.order.dto.OrderItemView;
+import com.digging.gingstyle.order.dto.OrderView;
 import com.digging.gingstyle.order.service.OrderService;
 
 import jakarta.servlet.http.HttpSession;
@@ -19,19 +21,30 @@ import lombok.RequiredArgsConstructor;
 public class OrderController {
 	private final OrderService orderService;
 
-	// 사용자 관련 - 주문 화면
+	// 사용자 관련 - 주문 진행 화면
 	@GetMapping
-	public String cart(
+	public String orderView(
+			@RequestBody List<OrderItemView> orderItemViewList
+			, Model model) {
+		
+		model.addAttribute("orderItemViewList", orderItemViewList);
+		
+		return "user/order";
+	}
+	
+	// 사용자 관련 - 주문 내역 화면
+	@GetMapping("/history")
+	public String orderHistoryView(
 			HttpSession session
 			, Model model) {
 		
 		int userId = (Integer) session.getAttribute("userId");
 		
-		List<CartView> cartView = cartService.getCartList(userId);
+		List<OrderView> orderViewList = orderService.getOrderView(userId);
 		
-		model.addAttribute("cartView", cartView);
+		model.addAttribute("orderViewList", orderViewList);
 		
-		return "user/cart";
+		return "user/orderHistory";
 	}
 	
 }
