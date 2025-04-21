@@ -5,17 +5,45 @@
 	<main layout:fragment="contents" class="container" style="padding-top: 120px; padding-bottom: 60px;">
 	    <div class="row">
 	        <div class="col-md-6">
-	            <img src="black-shirt.jpg" class="img-fluid mb-3" alt="상품 이미지">
+	            <img th:src="${detail.mainImagePath}" class="img-fluid mb-3" alt="상품 이미지">
 	        </div>
 	        <div class="col-md-6">
-	            <h3>Organic dreamy camisole (Black)</h3>
-	            <h5>₩44,000</h5>
-	            <p>상품설명상ㅁㅍㅁㄴㄹㄴㅇㄹ</p>
+	            <h3 th:text="${detail.name}">Organic dreamy camisole (Black)</h3>
+	            <h5 th:text="'₩' + ${#numbers.formatInteger(detail.price, 3, 'COMMA')}">상품가격</h5>
+	            <p th:text="${detail.discription}">상품설명</p>
 	
 	            <div class="d-flex gap-2">
-	                <button class="btn btn-dark">add to cart</button>
+	                <button type="button" class="btn btn-dark" id="cartBtn" th:value="${detail.productId}">add to cart</button>
 	            </div>
 	        </div>
 	    </div>
 	</main>
+	
+	<script layout:fragment="script">
+		$(function() {
+			
+			// 장바구니 추가
+			$("#cartBtn").on("click", function() {
+				let productId = $(this).val();
+				
+				$.ajax({
+					type:"post"
+					, url:"/cart/add"
+					, data:{"productId":productId}
+					, success:function(response) {
+						if(response.result == "success") {
+							alert("선택하신 상품을 장바구니에 담았습니다.");
+						} else {
+							alert("장바구니 실패!!");
+						}
+					}
+					, error:function() {
+						alert("장바구니 에러!!");
+					}
+				});
+				
+			});
+			
+		});
+	</script>
 </html>

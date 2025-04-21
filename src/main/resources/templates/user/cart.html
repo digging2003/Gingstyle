@@ -5,43 +5,65 @@
         
      <main layout:fragment="contents" class="container my-5">
           <h4 class="mb-4">장바구니</h4>
-          
-          <div class="table-responsive">
-              <table class="table align-middle text-center">
-                  <thead class="table-light">
-                      <tr>
-                          <th></th>
-                          <th>이름</th>
-                          <th>가격</th>
-                          <th>수량</th>
-                          <th>총액</th>
-                          <th></th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      <tr>
-                          <td><img src="black-shirt.jpg" alt="상품1" width="80"></td>
-                          <td>Bunny&Doll Jewel-T long (Black)</td>
-                          <td>₩44,000</td>
-                          <td>1</td>
-                          <td>₩44,000</td>
-                          <td><i class="icon bi bi-trash"></i></td>
-                      </tr>
-                      <tr>
-                          <td><img src="pink-shirt.jpg" alt="상품2" width="80"></td>
-                          <td>Bunny&Doll skirt pants</td>
-                          <td>₩89,000</td>
-                          <td>2</td>
-                          <td>₩89,000</td>
-                          <td><i class="icon bi bi-trash"></i></td>
-                      </tr>
-                  </tbody>
-              </table>
-          </div>
-      
-          <div class="text-end mt-4">
-              <h5>총 주문금액 : <strong>₩133,000</strong></h5>
-              <button class="btn btn-dark mt-2">주문하기</button>
+          <div th:if="${cartView != null}">
+	          <div class="table-responsive">
+	              <table class="table align-middle text-center">
+	                  <thead class="table-light">
+	                      <tr>
+	                          <th></th>
+	                          <th>상품정보</th>
+	                          <th>가격</th>
+	                          <th>수량</th>
+	                          <th>상품금액</th>
+	                          <th></th>
+	                      </tr>
+	                  </thead>
+	                  <tbody>
+	                      <tr th:each="cart:${cartView}">
+	                          <td><a th:href="@{/product/detail(productId = ${cart.productId})}"><img th:src="${cart.mainImagePath}" alt="상품" width="80"></a></td>
+	                          <td><a th:text="${cart.name}" th:href="@{/product/detail(productId = ${cart.productId})}">상품이름</a></td>
+	                          <td th:text="'₩' + ${#numbers.formatInteger(cart.price, 3, 'COMMA')}">상품가격</td>
+	                          <td th:text="${cart.quantity}">상품수량</td>
+	                          <td th:text="'₩' + ${#numbers.formatInteger(cart.totalPrice, 3, 'COMMA')}">상품가격</td>
+	                          <td><button type="button" class="deleteBtn" th:value="${cart.productId}"><i class="icon bi bi-trash"></i></button></td>
+	                      </tr>
+	                  </tbody>
+	              </table>
+	              
+	          </div>
+	          <div class="text-end mt-4">
+	              <h5>총 주문금액 : <strong th:text="'₩' + ${#numbers.formatInteger(#aggregates.sum(cartView.![totalPrice]), 3, 'COMMA')}">₩133,000</strong></h5>
+	              <button class="btn btn-dark mt-2" id="orderBtn">주문하기</button>
+	          </div>
           </div>
       </main> 
+      
+      <script layout:fragment="script">
+		$(function() {
+			
+			// 장바구니 상품 삭제
+			$(".deleteBtn").on("click", function() {
+				let productId = $(this).val();
+				
+				$.ajax({
+					type:"delete"
+					, url:"/cart/delete"
+					, data:{"productId":productId}
+					, success:function(response) {
+						if(response.result == "success") {
+							alert("장바구니 상품 삭제");
+							location.href = "";
+						} else {
+							alert("장바구니 삭제 실패!!");
+						}
+					}
+					, error:function() {
+						alert("장바구니 삭제 에러!!");
+					}
+				});
+				
+			});
+			
+		});
+	</script>
 </html>

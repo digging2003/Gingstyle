@@ -12,6 +12,7 @@ import lombok.Getter;
 public class Detail {
 
 	// 카테고리 페이지에 필요한 정보
+	private int productId;
 	private String name;
 	private int beforePrice; 
 	private int price;

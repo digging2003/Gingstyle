@@ -188,6 +188,7 @@ public class ProductService {
 			String mainImagePath = imageRepository.findTopByProductId(productId).getImagePath();
 			
 			Detail detail = Detail.builder()
+					.productId(productId)
 					.name(product.getName())
 					.beforePrice(product.getBeforePrice())
 					.price(product.getPrice())
@@ -213,6 +214,7 @@ public class ProductService {
 		String mainImagePath = imageRepository.findTopByProductId(productId).getImagePath();
 		
 		Detail detail = Detail.builder()
+				.productId(productId)
 				.name(product.getName())
 				.beforePrice(product.getBeforePrice())
 				.price(product.getPrice())
