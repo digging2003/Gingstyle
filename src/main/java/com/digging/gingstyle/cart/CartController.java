@@ -34,7 +34,11 @@ public class CartController {
 		
 		List<CartView> cartView = cartService.getCartList(userId);
 		
-		model.addAttribute("cartView", cartView);
+		if(cartView.isEmpty()) {
+			model.addAttribute("cartView", "nothing");
+		} else {
+			model.addAttribute("cartView", cartView);
+		}
 		
 		return "user/cart";
 	}

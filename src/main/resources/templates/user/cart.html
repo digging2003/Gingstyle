@@ -5,7 +5,7 @@
         
      <main layout:fragment="contents" class="container my-5">
           <h4 class="mb-4">장바구니</h4>
-          <div th:if="${cartView != null}">
+          <div th:if="${cartView != 'nothing'}">
 	          <div class="table-responsive">
 	              <table class="table align-middle text-center">
 	                  <thead class="table-light">
@@ -36,6 +36,10 @@
 	              <button class="btn btn-dark mt-2" id="orderBtn">주문하기</button>
 	          </div>
           </div>
+          
+           <div th:unless="${cartView != 'nothing'}">
+           		장바구니가 비어있습니다.
+           </div>
       </main> 
       
       <script layout:fragment="script">
@@ -51,7 +55,7 @@
 					, data:{"productId":productId}
 					, success:function(response) {
 						if(response.result == "success") {
-							alert("장바구니 상품 삭제");
+							alert("장바구니 상품이 삭제되었습니다.");
 							location.href = "";
 						} else {
 							alert("장바구니 삭제 실패!!");
