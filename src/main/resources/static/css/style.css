@@ -250,4 +250,139 @@ input::placeholder {
     font-size: 14px;
 }
 
+/* 장바구니 디자인 */
+.empty-cart {
+    text-align: center;
+    margin-top: 80px;
+    margin-bottom: 80px;
+    color: #999;
+}
+
+.empty-cart i {
+    font-size: 3rem;
+    color: #ccc;
+}
+
+.empty-cart p {
+    margin-top: 10px;
+    margin-bottom: 100px;
+    font-size: 15px;
+}
+
+/* 장바구니 페이지 여백 완전 제거 */
+.cart-page {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.cart-page .table {
+    margin-bottom: 0;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.empty-cart i {
+    font-size: 3rem;
+    color: #ccc;
+}
+
+.more-shoping {
+    margin-top: 10px;
+    margin-bottom: 100px;
+    font-size: 14px;
+    color: #b89494;
+    text-decoration: underline;
+}
+
+.cart-page .form-control {
+    border-radius: 0;
+    font-size: 14px;
+}
+
+.cart-page button {
+    font-size: 13px;
+}
+
+.cart-page p {
+    font-size: 14px;
+}
+
+.total-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 25px;
+    color: #b89494;
+}
+
+/* 리뷰 테이블 이미지 크기 고정 */
+.review {
+    font-family: 'Playfair Display', serif;
+    color: #5c5c5c;
+    font-size: 25px;
+}
+
+.review-product {
+    font-family: 'Playfair Display', serif;
+    color: #d0a0a4;
+    font-size: 13px;
+}
+
+.review-contents {
+    color: #3c3c3c;
+    font-size: 15px;
+}
+
+.review-name {
+    color: #8c8c8c;
+    font-size: 13px;
+}
+
+.review-img img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+/* 주문 페이지 */
+
+.order-summary {
+    position: sticky;
+    top: 120px; /* 헤더 높이 고려 */
+    background-color: #f9f9f9;
+}
+
+.order-summary img {
+    object-fit: cover;
+    height: 70px;
+    width: 70px;
+    border-radius: 4px;
+}
+
+.btn-paynow {
+    background-color: #e2bfc4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.btn-paynow:hover {
+    background-color: #d8aeb5;
+    color: white;
+}
+
+.payment-illustration {
+    width: 250px;
+    height: 150px;
+    border: 1px dashed #ccc;
+    border-radius: 6px;
+    padding: 30px 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fefefe;
+}
+
+
 

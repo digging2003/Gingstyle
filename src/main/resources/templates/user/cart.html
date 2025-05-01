@@ -1,73 +1,153 @@
 <html lang="ko" 
     xmlns:th="http://www.thymeleaf.org" 
-        xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-        layout:decorate="~{layouts/default}">
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="~{layouts/default}">
+
+<main layout:fragment="contents" class="container my-5">
+    <h4 class="mb-4">장바구니</h4>
+    <div th:if="${cartView != 'nothing'}">
+        <div class="table-responsive">
+            <table class="table align-middle text-center">
+                <thead class="table-light">
+                    <tr>
+                        <th><input type="checkbox" id="checkAll" class="form-check-input" checked></th>
+                        <th></th>
+                        <th>상품정보</th>
+                        <th>가격</th>
+                        <th>수량</th>
+                        <th>상품금액</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="cartView" th:each="cart:${cartView}" th:data-productId="${cart.productId}" th:data-quantity="${cart.quantity}">
+                        <td><input type="checkbox" class="form-check-input" th:value="${cart.productId}" checked></td>
+                        <td><a th:href="@{/product/detail(productId = ${cart.productId})}"><img th:src="${cart.mainImagePath}" alt="상품" width="80"></a></td>
+                        <td><a th:text="${cart.name}" th:href="@{/product/detail(productId = ${cart.productId})}">상품이름</a></td>
+                        <td th:text="'₩' + ${#numbers.formatInteger(cart.price, 3, 'COMMA')}">상품가격</td>
+                        <td th:text="${cart.quantity}">상품수량</td>
+                        <td th:text="'₩' + ${#numbers.formatInteger(cart.totalPrice, 3, 'COMMA')}">상품금액</td>
+                        <td><button type="button" class="deleteBtn" th:value="${cart.productId}"><i class="icon bi bi-trash"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-end mt-4">
+            <h5>총 주문금액 :
+                <strong id="selectedTotal" th:text="'₩' + ${#numbers.formatInteger(#aggregates.sum(cartView.![totalPrice]), 3, 'COMMA')}">₩133,000</strong>
+            </h5>
+            <button class="btn btn-dark mt-2" id="orderBtn">주문하기</button>
+        </div>
+    </div>
+
+    <div th:unless="${cartView != 'nothing'}">
+        장바구니가 비어있습니다.
+    </div>
+</main>
+
+<script layout:fragment="script">
+    $(function() {
         
-     <main layout:fragment="contents" class="container my-5">
-          <h4 class="mb-4">장바구니</h4>
-          <div th:if="${cartView != 'nothing'}">
-	          <div class="table-responsive">
-	              <table class="table align-middle text-center">
-	                  <thead class="table-light">
-	                      <tr>
-	                          <th></th>
-	                          <th>상품정보</th>
-	                          <th>가격</th>
-	                          <th>수량</th>
-	                          <th>상품금액</th>
-	                          <th></th>
-	                      </tr>
-	                  </thead>
-	                  <tbody>
-	                      <tr th:each="cart:${cartView}">
-	                          <td><a th:href="@{/product/detail(productId = ${cart.productId})}"><img th:src="${cart.mainImagePath}" alt="상품" width="80"></a></td>
-	                          <td><a th:text="${cart.name}" th:href="@{/product/detail(productId = ${cart.productId})}">상품이름</a></td>
-	                          <td th:text="'₩' + ${#numbers.formatInteger(cart.price, 3, 'COMMA')}">상품가격</td>
-	                          <td th:text="${cart.quantity}">상품수량</td>
-	                          <td th:text="'₩' + ${#numbers.formatInteger(cart.totalPrice, 3, 'COMMA')}">상품가격</td>
-	                          <td><button type="button" class="deleteBtn" th:value="${cart.productId}"><i class="icon bi bi-trash"></i></button></td>
-	                      </tr>
-	                  </tbody>
-	              </table>
-	              
-	          </div>
-	          <div class="text-end mt-4">
-	              <h5>총 주문금액 : <strong th:text="'₩' + ${#numbers.formatInteger(#aggregates.sum(cartView.![totalPrice]), 3, 'COMMA')}">₩133,000</strong></h5>
-	              <button class="btn btn-dark mt-2" id="orderBtn">주문하기</button>
-	          </div>
-          </div>
-          
-           <div th:unless="${cartView != 'nothing'}">
-           		장바구니가 비어있습니다.
-           </div>
-      </main> 
-      
-      <script layout:fragment="script">
-		$(function() {
-			
-			// 장바구니 상품 삭제
-			$(".deleteBtn").on("click", function() {
-				let productId = $(this).val();
-				
-				$.ajax({
-					type:"delete"
-					, url:"/cart/delete"
-					, data:{"productId":productId}
-					, success:function(response) {
-						if(response.result == "success") {
-							alert("장바구니 상품이 삭제되었습니다.");
-							location.href = "";
-						} else {
-							alert("장바구니 삭제 실패!!");
-						}
-					}
-					, error:function() {
-						alert("장바구니 삭제 에러!!");
-					}
-				});
-				
-			});
-			
-		});
-	</script>
+    	// 주문 버튼 클릭시 이동
+    	$("#orderBtn").on("click", function () {
+    	    let orderItemViewList = [];
+
+    	    $(".cartView").each(function () {
+    	        let checkbox = $(this).find("input[type='checkbox']");
+
+    	        if (checkbox.is(":checked")) {
+    	            let productId = $(this).data("productid"); // 소문자 'd'
+    	            let quantity = $(this).data("quantity");
+
+    	            orderItemViewList.push({
+    	                productId: productId,
+    	                quantity: quantity
+    	            });
+    	        }
+    	    });
+
+    	    if (orderItemViewList.length === 0) {
+    	        alert("주문할 상품을 선택해주세요.");
+    	        return;
+    	    }
+
+    	    $.ajax({
+    	        type: "POST",
+    	        url: "/order/page",
+    	        contentType: "application/json",
+    	        data: JSON.stringify({orderItemViewList: orderItemViewList}),
+    	        success: function (response) {
+    	            if (response.result === "success") {
+    	                alert("주문 완료!");
+    	                
+    	            } else {
+    	                alert("주문 실패!");
+    	            }
+    	        },
+    	        error: function () {
+    	            alert("주문 오류!");
+    	        }
+    	    });
+    	});
+
+
+        // 장바구니 상품 삭제
+        $(".deleteBtn").on("click", function() {
+            let productId = $(this).val();
+            
+            $.ajax({
+                type:"delete"
+                , url:"/cart/delete"
+                , data:{"productId":productId}
+                , success:function(response) {
+                    if(response.result == "success") {
+                        alert("장바구니 상품이 삭제되었습니다.");
+                        location.href = "";
+                    } else {
+                        alert("장바구니 삭제 실패!!");
+                    }
+                }
+                , error:function() {
+                    alert("장바구니 삭제 에러!!");
+                }
+            });
+        });
+
+        // 전체 선택 체크박스 제어
+        $("#checkAll").on("change", function () {
+            $(".cartView input[type='checkbox']").prop("checked", this.checked);
+            updateTotalPrice(); // 선택 항목 금액 업데이트
+        });
+
+        // 개별 체크박스 변경 시 전체선택 상태도 변경
+        $(".cartView input[type='checkbox']").on("change", function () {
+            let totalCheckbox = $(".cartView input[type='checkbox']").length;
+            let checkedCheckbox = $(".cartView input[type='checkbox']:checked").length;
+
+            $("#checkAll").prop("checked", totalCheckbox === checkedCheckbox);
+            updateTotalPrice(); // 선택 항목 금액 업데이트
+        });
+
+        // 선택된 항목의 총 금액 계산 함수
+        function updateTotalPrice() {
+            let total = 0;
+
+            $(".cartView").each(function () {
+                let checkbox = $(this).find("input[type='checkbox']");
+
+                if (checkbox.is(":checked")) {
+                    let priceText = $(this).find("td").eq(5).text(); // 상품금액 셀 (₩12,000 등)
+                    let price = parseInt(priceText.replace(/[^\d]/g, '')); // ₩, , 제거하고 숫자만 추출
+                    total += price;
+                }
+            });
+
+            // 총액 업데이트
+            $("#selectedTotal").text("₩" + total.toLocaleString());
+        }
+
+        // 페이지 로드 시 초기 총액 계산
+        updateTotalPrice();
+    });
+</script>
 </html>

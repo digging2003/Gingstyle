@@ -41,6 +41,30 @@ public class OrderService {
 	
 	// 사용자 관련 - 주문 취소 요청 API
 	
+	// 사용자 관련 - 주문 진행 화면
+	public List<OrderItemView> getOrderItemView(List<OrderItemView> orderItemViewList, int userId) {
+		
+		List<OrderItemView> resultList = new ArrayList<>();
+		
+		for(OrderItemView orderItemView:orderItemViewList) {
+			
+			Detail detail = productService.getDetailView(orderItemView.getProductId());
+			
+			orderItemView = orderItemView.toBuilder()
+					.userId(userId)
+					.productId(orderItemView.getProductId())
+					.quantity(orderItemView.getQuantity())
+					.name(detail.getName())
+					.price(detail.getPrice())
+					.mainImagePath(detail.getMainImagePath())
+					.build();
+			
+			resultList.add(orderItemView);
+		}
+		
+		return resultList;
+	}
+	
 	// 사용자 관련 - 주문 내역 화면
 	public List<OrderView> getOrderView(int userId) {
 		

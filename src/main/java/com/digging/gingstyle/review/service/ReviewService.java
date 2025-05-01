@@ -1,14 +1,21 @@
 package com.digging.gingstyle.review.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.digging.gingstyle.common.FileManager;
+import com.digging.gingstyle.products.dto.Detail;
+import com.digging.gingstyle.products.service.ProductService;
 import com.digging.gingstyle.review.domain.Review;
+import com.digging.gingstyle.review.dto.ReviewDetail;
 import com.digging.gingstyle.review.repository.ReviewRepository;
+import com.digging.gingstyle.user.domain.User;
+import com.digging.gingstyle.user.repository.UserRepository;
 
 import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +24,10 @@ import lombok.RequiredArgsConstructor;
 @Service
 public class ReviewService {
 	private final ReviewRepository reviewRepository;
+	
+	private final ProductService productService;
+	
+	private final UserRepository userRepository;
 	
 	// 사용자 관련 - 리뷰 추가 API
 	public boolean addReview(
@@ -104,13 +115,45 @@ public class ReviewService {
 		return true;
 	}
 	
-	// 사용자 관련 - 상품별 리뷰 조회
-	public List<Review> getReviewListByProductId(
-			int productId) {
+	// 사용자 관련 - 상품별/전체 리뷰 조회
+	public List<ReviewDetail> getReviewListByProductId(
+			Integer productId) {
 		
-		List<Review> reviewList = reviewRepository.findByProductId(productId);
+		List<ReviewDetail> reviewDetailList = new ArrayList<>();
 		
-		return reviewList;
+		List<Review> reviewList = new ArrayList<>();
+		
+		if(productId == null) {
+			reviewList = reviewRepository.findAll(Sort.by(Sort.Direction.DESC, "id")); // 최근 작성순 정렬
+		} else {
+			reviewList = reviewRepository.findByProductIdOrderByIdDesc(productId);
+		}
+		
+		for(Review review:reviewList) {
+
+			productId = review.getProductId();
+			Detail detail = productService.getDetailView(productId);
+			User user = userRepository.findById(review.getUserId()).get();
+			String imagePath = review.getImagePath();
+			
+			// 사진 없을시 제품 대표이미지로 설정
+			if(imagePath == null) {
+				imagePath = detail.getMainImagePath();
+			}
+			
+			ReviewDetail reviewDetail = ReviewDetail.builder()
+					.userId(review.getUserId())
+					.userName(user.getName())
+					.productId(productId)
+					.rating(review.getRating())
+					.imagePath(imagePath)
+					.comment(review.getComment())
+					.build();
+			
+			reviewDetailList.add(reviewDetail);
+		}
+		
+		return reviewDetailList;
 		
 	}
 	

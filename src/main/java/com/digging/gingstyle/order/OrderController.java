@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,10 +23,15 @@ public class OrderController {
 	private final OrderService orderService;
 
 	// 사용자 관련 - 주문 진행 화면
-	@GetMapping
+	@PostMapping
 	public String orderView(
 			@RequestBody List<OrderItemView> orderItemViewList
-			, Model model) {
+			, Model model
+			, HttpSession session) {
+		
+		int userId = (Integer) session.getAttribute("userId");
+		
+		orderItemViewList = orderService.getOrderItemView(orderItemViewList, userId);
 		
 		model.addAttribute("orderItemViewList", orderItemViewList);
 		
@@ -33,7 +39,7 @@ public class OrderController {
 	}
 	
 	// 사용자 관련 - 주문 내역 화면
-	@GetMapping("/history")
+	@PostMapping("/history")
 	public String orderHistoryView(
 			HttpSession session
 			, Model model) {

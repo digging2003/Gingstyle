@@ -17,7 +17,7 @@
                     <input type="password" class="form-control" id="passwordInput" placeholder="비밀번호">
                 </div>
                 <div>
-                	<div id="duplicate" class="text-danger d-hidden">중복된 이메일 입니다.</div>
+                	<div id="duplicate" class="text-danger d-none">중복된 이메일 입니다.</div>
                     <button type="button" class="btn btn-primary" id="joinBtn">create</button>
                 </div>
             </div>
@@ -30,62 +30,65 @@
         <script layout:fragment="script">
 			$(function() {
 				
-
-				
 				$("#joinBtn").on("click", function() {
-					let name = $("#nameInput").val();
-					let email = $("#emailInput").val();
-					let password = $("#passwordInput").val();
-					
-					if(name == "") {
-						alert("이름을 입력하세요");
-						return ;
-					}
-					
-					if(email == "") {
-						alert("이메일을 입력하세요");
-						return ;
-					}
-					
-					if(password == "") {
-						alert("비밀번호를 입력하세요");
-						return ;
-					}
-					
-					$.ajax({
-						type:"Get"
-						, url:"/user/duplicate-email"
-						, data:{"email":email}
-						, success:function(response) {
-							if(response.isDuplicate == true) {
-								$("#duplicate").show();
-								return ;
-							} else {
-							}
-						}
-						, error:function() {
-							alert("중복 확인 에러!!");
-							return ;
-						}
-					});
-					
-					$.ajax({
-						type:"post"
-						, url:"/user/join"
-						, data:{"name":name, "email":email, "password":password}
-						, success:function(response) {
-							if(response.result == "success") {
-								alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
-								location.href = "/user/login-view";
-							} else {
-								alert("회원 가입 실패!!");
-							}
-						}
-						, error:function() {
-							alert("회원가입 에러!!");
-						}
-					});
+				    let name = $("#nameInput").val();
+				    let email = $("#emailInput").val();
+				    let password = $("#passwordInput").val();
+
+				    if(name == "") {
+				        alert("이름을 입력하세요");
+				        return;
+				    }
+
+				    if(email == "") {
+				        alert("이메일을 입력하세요");
+				        return;
+				    }
+
+				    if(password == "") {
+				        alert("비밀번호를 입력하세요");
+				        return;
+				    }
+
+				    // 1. 이메일 중복 체크 먼저
+				    $.ajax({
+				        type: "get",
+				        url: "/user/duplicate-email",
+				        data: {"email": email},
+				        success: function(response) {
+				            if(response.isDuplicate == true) {
+				                $("#duplicate").removeClass("d-none"); // 중복 메시지 표시
+				                return;
+				            } else {
+				                $("#duplicate").addClass("d-none"); // 이전에 보였다면 숨기기
+
+				                // 2. 중복이 아니면 여기서 회원가입 요청
+				                $.ajax({
+				                    type: "post",
+				                    url: "/user/join",
+				                    data: {"name": name, "email": email, "password": password},
+				                    success: function(response) {
+				                        if(response.result == "success") {
+				                            alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+				                            location.href = "/user/login-view";
+				                        } else {
+				                            alert("회원 가입 실패!!");
+				                        }
+				                    },
+				                    error: function() {
+				                        alert("회원가입 에러!!");
+				                    }
+				                });
+				            }
+				        },
+				        error: function() {
+				            alert("중복 확인 에러!!");
+				        }
+				    });
 				});
+				
+				
+				
 			});
 		
 		</script>

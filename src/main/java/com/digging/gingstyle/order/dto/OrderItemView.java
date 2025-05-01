@@ -3,12 +3,13 @@ package com.digging.gingstyle.order.dto;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
+@Builder(toBuilder=true)
 @Getter
 public class OrderItemView {
 	
 	// 주문하는 페이지에 필요한 정보
 	// front로부터 전달받을 값
+	private int userId;
 	private int productId;
 	private int quantity;
 	

@@ -8,7 +8,7 @@ import com.digging.gingstyle.review.domain.Review;
 
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
 
-	public List<Review> findByProductId(int productId);
+	public List<Review> findByProductIdOrderByIdDesc(int productId);
 	
 	public List<Review> findByUserId(int userId);
 }

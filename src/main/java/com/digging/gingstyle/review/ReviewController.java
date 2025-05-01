@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.digging.gingstyle.review.domain.Review;
+import com.digging.gingstyle.review.dto.ReviewDetail;
 import com.digging.gingstyle.review.service.ReviewService;
 
 import jakarta.servlet.http.HttpSession;
@@ -23,12 +24,12 @@ public class ReviewController {
 	// 사용자 관련 - 상품별 리뷰 조회
 	@GetMapping
 	public String getReviewListByProductId(
-			@RequestParam int productId
+			@RequestParam(required=false) Integer productId
 			, Model model) {
 		
-		List<Review> reviewList = reviewService.getReviewListByProductId(productId);
+		List<ReviewDetail> reviewDetailList = reviewService.getReviewListByProductId(productId);
 		
-		model.addAttribute("reviewList", reviewList);
+		model.addAttribute("reviewDetailList", reviewDetailList);
 		
 		return "product/review";
 	}
