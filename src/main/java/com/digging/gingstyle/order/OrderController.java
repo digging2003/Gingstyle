@@ -4,12 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
-import com.digging.gingstyle.order.dto.OrderItemView;
+import com.digging.gingstyle.cart.dto.CartView;
 import com.digging.gingstyle.order.dto.OrderView;
 import com.digging.gingstyle.order.service.OrderService;
 
@@ -25,15 +24,15 @@ public class OrderController {
 	// 사용자 관련 - 주문 진행 화면
 	@PostMapping
 	public String orderView(
-			@RequestBody List<OrderItemView> orderItemViewList
+			@RequestParam("cartId") List<Integer> cartIdList
 			, Model model
 			, HttpSession session) {
 		
 		int userId = (Integer) session.getAttribute("userId");
 		
-		orderItemViewList = orderService.getOrderItemView(orderItemViewList, userId);
+		List<CartView> cartViewList = orderService.getOrderItemViewList(cartIdList, userId);
 		
-		model.addAttribute("orderItemViewList", orderItemViewList);
+		model.addAttribute("cartViewList", cartViewList);
 		
 		return "user/order";
 	}

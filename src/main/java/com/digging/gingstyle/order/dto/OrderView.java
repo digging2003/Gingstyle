@@ -17,6 +17,6 @@ public class OrderView {
 	private String address;
 	private String status;
 	private String payment;
-	private List<OrderItemView> orderItems;
+	private List<OrderItemView> orderItemViewList;
 	
 }

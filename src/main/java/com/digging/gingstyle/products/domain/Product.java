@@ -29,7 +29,7 @@ public class Product {
 	
 	private String name;
 	private String discription;
-	private int beforePrice; 
+	private Integer beforePrice; 
 	private int price;
 	private int stock;
 	private int categoryId;

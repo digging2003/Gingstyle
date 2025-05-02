@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.digging.gingstyle.cart.domain.Cart;
+import com.digging.gingstyle.cart.dto.CartView;
+import com.digging.gingstyle.cart.repository.CartRepository;
 import com.digging.gingstyle.order.domain.Order;
 import com.digging.gingstyle.order.domain.OrderItem;
 import com.digging.gingstyle.order.dto.OrderItemView;
@@ -12,6 +15,8 @@ import com.digging.gingstyle.order.dto.OrderView;
 import com.digging.gingstyle.order.repository.OrderRepository;
 import com.digging.gingstyle.products.dto.Detail;
 import com.digging.gingstyle.products.service.ProductService;
+import com.digging.gingstyle.user.domain.User;
+import com.digging.gingstyle.user.repository.UserRepository;
 
 import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +26,8 @@ import lombok.RequiredArgsConstructor;
 public class OrderService {
 	private final OrderRepository orderRepository;
 	private final ProductService productService;
+	private final CartRepository cartRepository;
+	private final UserRepository userRepository;
 
 	// 사용자 관련 - 주문 등록 API
 	public boolean addOrder(int userId, Order order) {
@@ -42,24 +49,35 @@ public class OrderService {
 	// 사용자 관련 - 주문 취소 요청 API
 	
 	// 사용자 관련 - 주문 진행 화면
-	public List<OrderItemView> getOrderItemView(List<OrderItemView> orderItemViewList, int userId) {
+	public List<CartView> getOrderItemViewList(List<Integer> cartIdList, int userId) {
 		
-		List<OrderItemView> resultList = new ArrayList<>();
+		List<CartView> resultList = new ArrayList<>();
+		List<Cart> cartList = new ArrayList<>();
 		
-		for(OrderItemView orderItemView:orderItemViewList) {
+		for(int id:cartIdList) {
+			Cart cart = cartRepository.findById(id).get();
+			cartList.add(cart);
+		}
+		
+		for(Cart cart:cartList) {
 			
-			Detail detail = productService.getDetailView(orderItemView.getProductId());
+			Detail detail = productService.getDetailView(cart.getProductId());
+			int price = detail.getPrice();
+			int quantity = cart.getQuantity();
+			int totalPrice = price * quantity;
 			
-			orderItemView = orderItemView.toBuilder()
+			CartView cartView = CartView.builder()
+					.cartId(cart.getId())
 					.userId(userId)
-					.productId(orderItemView.getProductId())
-					.quantity(orderItemView.getQuantity())
-					.name(detail.getName())
-					.price(detail.getPrice())
+					.productId(cart.getProductId())
 					.mainImagePath(detail.getMainImagePath())
+					.name(detail.getName())
+					.quantity(cart.getQuantity())
+					.price(detail.getPrice())
+					.totalPrice(totalPrice)
 					.build();
 			
-			resultList.add(orderItemView);
+			resultList.add(cartView);
 		}
 		
 		return resultList;
@@ -80,6 +98,7 @@ public class OrderService {
 				Detail detail = productService.getDetailView(orderItem.getProductId());
 				
 				OrderItemView orderItemView = OrderItemView.builder()
+						.id(orderItem.getId())
 						.productId(orderItem.getProductId())
 						.quantity(orderItem.getQuantity())
 						.name(detail.getName())
@@ -95,7 +114,7 @@ public class OrderService {
 					.address(order.getAddress())
 					.status(order.getStatus())
 					.payment(order.getPayment())
-					.orderItems(orderItemViewList)
+					.orderItemViewList(orderItemViewList)
 					.build();
 			
 			orderViewList.add(orderView);

@@ -9,6 +9,7 @@ public class OrderItemView {
 	
 	// 주문하는 페이지에 필요한 정보
 	// front로부터 전달받을 값
+	private int id; // cartView id
 	private int userId;
 	private int productId;
 	private int quantity;

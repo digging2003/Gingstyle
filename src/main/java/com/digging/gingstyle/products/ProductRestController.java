@@ -26,7 +26,7 @@ public class ProductRestController {
 	public Map<String, String> createProduct(
 			@RequestParam String name
 			, @RequestParam String discription
-			, @RequestParam int beforePrice
+			, @RequestParam(required=false) int beforePrice
 			, @RequestParam int price
 			, @RequestParam int stock
 			, @RequestParam int categoryId) {

@@ -6,38 +6,40 @@
 <main layout:fragment="contents" class="container my-5">
     <h4 class="mb-4">장바구니</h4>
     <div th:if="${cartView != 'nothing'}">
-        <div class="table-responsive">
-            <table class="table align-middle text-center">
-                <thead class="table-light">
-                    <tr>
-                        <th><input type="checkbox" id="checkAll" class="form-check-input" checked></th>
-                        <th></th>
-                        <th>상품정보</th>
-                        <th>가격</th>
-                        <th>수량</th>
-                        <th>상품금액</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="cartView" th:each="cart:${cartView}" th:data-productId="${cart.productId}" th:data-quantity="${cart.quantity}">
-                        <td><input type="checkbox" class="form-check-input" th:value="${cart.productId}" checked></td>
-                        <td><a th:href="@{/product/detail(productId = ${cart.productId})}"><img th:src="${cart.mainImagePath}" alt="상품" width="80"></a></td>
-                        <td><a th:text="${cart.name}" th:href="@{/product/detail(productId = ${cart.productId})}">상품이름</a></td>
-                        <td th:text="'₩' + ${#numbers.formatInteger(cart.price, 3, 'COMMA')}">상품가격</td>
-                        <td th:text="${cart.quantity}">상품수량</td>
-                        <td th:text="'₩' + ${#numbers.formatInteger(cart.totalPrice, 3, 'COMMA')}">상품금액</td>
-                        <td><button type="button" class="deleteBtn" th:value="${cart.productId}"><i class="icon bi bi-trash"></i></button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="text-end mt-4">
-            <h5>총 주문금액 :
-                <strong id="selectedTotal" th:text="'₩' + ${#numbers.formatInteger(#aggregates.sum(cartView.![totalPrice]), 3, 'COMMA')}">₩133,000</strong>
-            </h5>
-            <button class="btn btn-dark mt-2" id="orderBtn">주문하기</button>
-        </div>
+    	<form action="/order" method="POST">
+	        <div class="table-responsive">
+	            <table class="table align-middle text-center">
+	                <thead class="table-light">
+	                    <tr>
+	                        <th><input type="checkbox" id="checkAll" class="form-check-input" checked></th>
+	                        <th></th>
+	                        <th>상품정보</th>
+	                        <th>가격</th>
+	                        <th>수량</th>
+	                        <th>상품금액</th>
+	                        <th></th>
+	                    </tr>
+	                </thead>
+	                <tbody>
+	                    <tr class="cartView" th:each="cart:${cartView}" th:data-productId="${cart.productId}" th:data-quantity="${cart.quantity}">
+	                        <td><input name="cartId" type="checkbox" class="form-check-input" th:value="${cart.cartId}" checked></td>
+	                        <td><a th:href="@{/product/detail(productId = ${cart.productId})}"><img th:src="${cart.mainImagePath}" alt="상품" width="80"></a></td>
+	                        <td><a th:text="${cart.name}" th:href="@{/product/detail(productId = ${cart.productId})}">상품이름</a></td>
+	                        <td th:text="'₩' + ${#numbers.formatInteger(cart.price, 3, 'COMMA')}">상품가격</td>
+	                        <td th:text="${cart.quantity}">상품수량</td>
+	                        <td th:text="'₩' + ${#numbers.formatInteger(cart.totalPrice, 3, 'COMMA')}">상품금액</td>
+	                        <td><button type="button" class="deleteBtn" th:value="${cart.productId}"><i class="icon bi bi-trash"></i></button></td>
+	                    </tr>
+	                </tbody>
+	            </table>
+	        </div>
+	        <div class="text-end mt-4">
+	            <h5>총 주문금액 :
+	                <strong id="selectedTotal" th:text="'₩' + ${#numbers.formatInteger(#aggregates.sum(cartView.![totalPrice]), 3, 'COMMA')}">총 상품금액</strong>
+	            </h5>
+	            <button type="submit" class="btn btn-dark mt-2" id="orderBtn">주문하기</button>
+	        </div>
+        </form>
     </div>
 
     <div th:unless="${cartView != 'nothing'}">
@@ -48,47 +50,25 @@
 <script layout:fragment="script">
     $(function() {
         
-    	// 주문 버튼 클릭시 이동
-    	$("#orderBtn").on("click", function () {
-    	    let orderItemViewList = [];
-
-    	    $(".cartView").each(function () {
-    	        let checkbox = $(this).find("input[type='checkbox']");
-
-    	        if (checkbox.is(":checked")) {
-    	            let productId = $(this).data("productid"); // 소문자 'd'
-    	            let quantity = $(this).data("quantity");
-
-    	            orderItemViewList.push({
-    	                productId: productId,
-    	                quantity: quantity
-    	            });
-    	        }
-    	    });
-
-    	    if (orderItemViewList.length === 0) {
-    	        alert("주문할 상품을 선택해주세요.");
-    	        return;
-    	    }
-
-    	    $.ajax({
-    	        type: "POST",
-    	        url: "/order/page",
-    	        contentType: "application/json",
-    	        data: JSON.stringify({orderItemViewList: orderItemViewList}),
-    	        success: function (response) {
-    	            if (response.result === "success") {
-    	                alert("주문 완료!");
-    	                
-    	            } else {
-    	                alert("주문 실패!");
-    	            }
-    	        },
-    	        error: function () {
-    	            alert("주문 오류!");
-    	        }
-    	    });
-    	});
+    	$("#orderBtn").on("click", function (e) {
+		    let form = $("form")[0];
+		    let checkedCartIds = [];
+		
+		    $(".cartView").each(function () {
+		        let checkbox = $(this).find("input[type='checkbox']");
+		
+		        if (checkbox.is(":checked")) {
+		            checkedCartIds.push(checkbox.val());
+		        } else {
+		            checkbox.prop("disabled", true); // 체크 안된 건 서버 전송 제외
+		        }
+		    });
+		
+		    if (checkedCartIds.length === 0) {
+		        e.preventDefault(); // 폼 제출 막기
+		        alert("주문할 상품을 선택해주세요.");
+		    }
+		});
 
 
         // 장바구니 상품 삭제

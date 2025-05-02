@@ -9,11 +9,11 @@ import org.springframework.stereotype.Service;
 import com.digging.gingstyle.cart.domain.Cart;
 import com.digging.gingstyle.cart.dto.CartView;
 import com.digging.gingstyle.cart.repository.CartRepository;
-import com.digging.gingstyle.common.FileManager;
-import com.digging.gingstyle.products.domain.Image;
 import com.digging.gingstyle.products.domain.Product;
 import com.digging.gingstyle.products.repository.ImageRepository;
 import com.digging.gingstyle.products.repository.ProductRepository;
+import com.digging.gingstyle.user.domain.User;
+import com.digging.gingstyle.user.repository.UserRepository;
 
 import jakarta.persistence.PersistenceException;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +24,7 @@ public class CartService {
 	private final CartRepository cartRepository;
 	private final ProductRepository productRepository;
 	private final ImageRepository imageRepository;
+	private final UserRepository userRepository;
 
 	// 사용자 관련 - 장바구니 추가 API
 	public boolean addCart(
@@ -103,7 +104,7 @@ public class CartService {
 		
 	}
 	
-	// 사용자 관련 - (session)userId로 장바구니 CartView 조회
+	// 사용자 관련 - (session)userId로 장바구니 CartViewList 조회
 	public List<CartView> getCartList(int userId) {
 			
 		// userId로 장바구니에 담긴 상품 리스트 조회
@@ -122,6 +123,7 @@ public class CartService {
 			int totalPrice = price * quantity;
 			
 			CartView cartView = CartView.builder()
+					.cartId(cart.getId())
 					.userId(userId)
 					.productId(productId)
 					.mainImagePath(mainImagePath)
@@ -137,6 +139,8 @@ public class CartService {
 		return cartViewList;
 		
 	}
+	
+	// 사용자 관련 - productId와 userId로 
 	
 	
 

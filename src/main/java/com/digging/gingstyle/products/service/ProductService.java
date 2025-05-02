@@ -187,6 +187,7 @@ public class ProductService {
 			List<Image> imageList = imageRepository.findByProductId(productId);
 			String mainImagePath = imageRepository.findTopByProductId(productId).getImagePath();
 			
+			
 			Detail detail = Detail.builder()
 					.productId(productId)
 					.name(product.getName())
