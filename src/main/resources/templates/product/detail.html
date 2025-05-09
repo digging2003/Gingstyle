@@ -2,20 +2,45 @@
     xmlns:th="http://www.thymeleaf.org" 
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
         layout:decorate="~{layouts/default}">
-	<main layout:fragment="contents" class="container" style="padding-top: 120px; padding-bottom: 60px;">
+	<main layout:fragment="contents" class="container px-0 justify-content-between">
 	    <div class="row">
-	        <div class="col-md-6">
-	            <img th:src="${detail.mainImagePath}" class="img-fluid mb-3" alt="상품 이미지">
+	        <div class="col-md-7 d-flex">
+	            <!-- 썸네일 세로 정렬 -->
+	            <div class="d-flex flex-column align-items-center me-3 gap-2 thumbnail">
+	              <img src="black-shirt.jpg" class="img-thumbnail thumb-img active" alt="썸네일1" onclick="changeImage('black-shirt.jpg', this)">
+	              <img src="pink-shirt.jpg" class="img-thumbnail thumb-img" alt="썸네일2" onclick="changeImage('pink-shirt.jpg', this)">
+	              <img src="black-shirt.jpg" class="img-thumbnail thumb-img" alt="썸네일3" onclick="changeImage('black-shirt.jpg', this)">
+	            </div>
+	          
+	            <!-- 메인 이미지 -->
+	            <img id="mainImage" th:src="${detail.mainImagePath}" class="main-image" alt="메인 이미지" style="max-width: 600px;">
 	        </div>
-	        <div class="col-md-6">
-	            <h3 th:text="${detail.name}">상품이름</h3>
-	            <h5 th:text="'₩' + ${#numbers.formatInteger(detail.price, 3, 'COMMA')}">상품가격</h5>
-	            <p th:text="${detail.discription}">상품설명</p>
-	
-	            <div class="d-flex gap-2">
-	                <button type="button" class="btn btn-dark" id="cartBtn" th:value="${detail.productId}">add to cart</button>
+	        <div class="col-md-5">
+	            <h5 th:text="${detail.name}">상품이름</h5>
+	            <p>
+	                <span th:text="'₩' + ${#numbers.formatInteger(detail.price, 3, 'COMMA')}">상품가격</span>
+	                <span th:text="'₩' + ${#numbers.formatInteger(detail.beforePrice, 3, 'COMMA')}" class="text-decoration-line-through text-secondary p-2">할인전상품가격</span>
+	            </p> 
+	            <div class="product-details">
+	            <ul>
+	                <li th:text="${detail.discription}">상품설명</li>
+	                <li>지퍼 클로징</li>
+	                <li>내부 패치 포켓</li>
+	                <li>‘b&d’ 로고</li>
+	                <li>보강재 내장</li>
+	            </ul>
+	            <p>- 1st pre-order 출고 예정일: 2025.04.09</p>
+	            <p>- 2nd pre-order 출고 예정일: 2025.04.30</p>
+	        </div>
+	        <div class="mb-3">
+	            <strong>size</strong><br>
+	            <div class="d-flex justify-content-between align-items-end">
+	                <div class="size-box">Free</div>
+	                <a href="#" class="a-reviews">reviews >> </a>
 	            </div>
 	        </div>
+	        	<button type="button" class="btn-preorder" id="cartBtn" th:value="${detail.productId}">add to cart</button>
+	      	</div>
 	    </div>
 	</main>
 	

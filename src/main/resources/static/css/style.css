@@ -384,5 +384,41 @@ input::placeholder {
     background-color: #fefefe;
 }
 
+/* 추가 상세페이지 style */
+
+.thumb-img {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    cursor: pointer;
+    border: 2px solid transparent;
+  }
+  
+  .thumb-img.active {
+    opacity: 1;
+  }
+  .main-image {
+    max-width: 100%;
+  }
+  .product-details {
+    font-size: 0.95rem;
+  }
+  .color-option input[type="radio"] {
+    display: none;
+  }
+  .size-box {
+    border: 1px solid #ccc;
+    padding: 5px 15px;
+    display: inline-block;
+    margin-top: 5px;
+  }
+  .btn-preorder {
+    background-color: #f3e9ea;
+    border: none;
+    padding: 12px;
+    width: 100%;
+    margin-top: 20px;
+  }
+
 
 

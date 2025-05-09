@@ -1,55 +1,86 @@
+<!DOCTYPE html>
 <html lang="ko" 
     xmlns:th="http://www.thymeleaf.org" 
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="~{layouts/default}">
 
-<main layout:fragment="contents" class="container my-5">
-    <h4 class="mb-4">장바구니</h4>
-    <div th:if="${cartView != 'nothing'}">
-    	<form action="/order" method="POST">
-	        <div class="table-responsive">
-	            <table class="table align-middle text-center">
-	                <thead class="table-light">
-	                    <tr>
-	                        <th><input type="checkbox" id="checkAll" class="form-check-input" checked></th>
-	                        <th></th>
-	                        <th>상품정보</th>
-	                        <th>가격</th>
-	                        <th>수량</th>
-	                        <th>상품금액</th>
-	                        <th></th>
-	                    </tr>
-	                </thead>
-	                <tbody>
-	                    <tr class="cartView" th:each="cart:${cartView}" th:data-productId="${cart.productId}" th:data-quantity="${cart.quantity}">
-	                        <td><input name="cartId" type="checkbox" class="form-check-input" th:value="${cart.cartId}" checked></td>
-	                        <td><a th:href="@{/product/detail(productId = ${cart.productId})}"><img th:src="${cart.mainImagePath}" alt="상품" width="80"></a></td>
-	                        <td><a th:text="${cart.name}" th:href="@{/product/detail(productId = ${cart.productId})}">상품이름</a></td>
-	                        <td th:text="'₩' + ${#numbers.formatInteger(cart.price, 3, 'COMMA')}">상품가격</td>
-	                        <td th:text="${cart.quantity}">상품수량</td>
-	                        <td th:text="'₩' + ${#numbers.formatInteger(cart.totalPrice, 3, 'COMMA')}">상품금액</td>
-	                        <td><button type="button" class="deleteBtn" th:value="${cart.productId}"><i class="icon bi bi-trash"></i></button></td>
-	                    </tr>
-	                </tbody>
-	            </table>
-	        </div>
-	        <div class="text-end mt-4">
-	            <h5>총 주문금액 :
-	                <strong id="selectedTotal" th:text="'₩' + ${#numbers.formatInteger(#aggregates.sum(cartView.![totalPrice]), 3, 'COMMA')}">총 상품금액</strong>
-	            </h5>
-	            <button type="submit" class="btn btn-dark mt-2" id="orderBtn">주문하기</button>
-	        </div>
-        </form>
-    </div>
+<main layout:fragment="contents" class="cart-page my-5 px-0">
+    <h4 class="m-4 d-flex align-items-center">장바구니</h4>
 
-    <div th:unless="${cartView != 'nothing'}">
-        장바구니가 비어있습니다.
+    <table class="table align-middle text-center border-top w-100">
+        <thead class="border-bottom">
+            <tr>
+                <th><input type="checkbox" id="checkAll" class="form-check-input" checked></th>
+                <th class="text-muted text-start ps-4">상품 정보</th>
+                <th class="text-muted">수량</th>
+                <th class="text-muted">주문금액</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <!-- 장바구니 비어있을 때 -->
+        <tbody th:unless="${cartView != 'nothing'}">
+            <tr>
+                <td colspan="5" class="empty-cart text-center py-5">
+                    <i class="bi bi-cart"></i>
+                    <p class="mt-3">장바구니가 비어있습니다.</p>
+                    <a href="#" class="more-shoping text-decoration-underline">계속 쇼핑하기</a>
+                </td>
+            </tr>
+        </tbody>
+
+        <!-- 장바구니 상품 있을 때 -->
+        <tbody th:if="${cartView != 'nothing'}">
+            <tr th:each="item : ${cartView}">
+                <td class="text-start ps-4" style="width: 50px;">
+                    <input type="checkbox" class="form-check-input" checked>
+                </td>
+                <td class="text-start d-flex align-items-center">
+                    <img th:src="${item.mainImagePath}" alt="상품 이미지" height="100">
+                    <span class="ms-3" th:text="${item.productName}">Bunny&Doll Jewel-T long (Black)</span>
+                </td>
+                <td>
+                    <div class="d-flex align-items-center justify-content-center mt-2">
+                        <button class="btn btn-outline-secondary btn-sm px-2 quantity-minus" 
+                                th:data-user-id="${item.userId}" th:data-product-id="${item.productId}">-</button>
+                        <span class="mx-2 quantity-count" th:text="${item.quantity}">1</span>
+                        <button class="btn btn-outline-secondary btn-sm px-2 quantity-plus" 
+                                th:data-user-id="${item.userId}" th:data-product-id="${item.productId}">+</button>
+                    </div>
+                    <div class="d-flex justify-content-center mt-2">
+                        <button class="btn btn-outline-secondary btn-sm mt-2">옵션/수량 변경</button>
+                    </div>
+                </td>
+                <td>
+                    <p class="fw-bold" th:text="${#numbers.formatInteger(item.totalPrice, 3, 'COMMA')} + '원'">44,000원</p>
+                </td>
+                <td>
+                    <button class="deleteBtn btn btn-sm" th:value="${item.productId}">
+                        <i class="icon bi bi-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- 상품 있을 때 하단 영역 -->
+    <div th:if="${cartView != 'nothing'}" class="px-4">
+        <div class="fw-bold d-flex align-items-center justify-content-center px-2 my-4">
+            <p>총 주문 금액   
+            <span class="total-price" th:text="${#numbers.formatInteger(#aggregates.sum(cartView.![totalPrice]), 3, 'COMMA')} + '원'">44,000원</span></p>
+        </div>
+
+        <div class="text-center mb-5">
+            <button class="btn btn-dark px-5 py-2">주문하기</button>
+            <div class="mt-3">
+                <a href="#" class="more-shoping">계속 쇼핑하기</a>
+            </div>
+        </div>
     </div>
 </main>
 
 <script layout:fragment="script">
-    $(function() {
-        
+	$(function() {
     	$("#orderBtn").on("click", function (e) {
 		    let form = $("form")[0];
 		    let checkedCartIds = [];
@@ -70,64 +101,6 @@
 		    }
 		});
 
-
-        // 장바구니 상품 삭제
-        $(".deleteBtn").on("click", function() {
-            let productId = $(this).val();
-            
-            $.ajax({
-                type:"delete"
-                , url:"/cart/delete"
-                , data:{"productId":productId}
-                , success:function(response) {
-                    if(response.result == "success") {
-                        alert("장바구니 상품이 삭제되었습니다.");
-                        location.href = "";
-                    } else {
-                        alert("장바구니 삭제 실패!!");
-                    }
-                }
-                , error:function() {
-                    alert("장바구니 삭제 에러!!");
-                }
-            });
-        });
-
-        // 전체 선택 체크박스 제어
-        $("#checkAll").on("change", function () {
-            $(".cartView input[type='checkbox']").prop("checked", this.checked);
-            updateTotalPrice(); // 선택 항목 금액 업데이트
-        });
-
-        // 개별 체크박스 변경 시 전체선택 상태도 변경
-        $(".cartView input[type='checkbox']").on("change", function () {
-            let totalCheckbox = $(".cartView input[type='checkbox']").length;
-            let checkedCheckbox = $(".cartView input[type='checkbox']:checked").length;
-
-            $("#checkAll").prop("checked", totalCheckbox === checkedCheckbox);
-            updateTotalPrice(); // 선택 항목 금액 업데이트
-        });
-
-        // 선택된 항목의 총 금액 계산 함수
-        function updateTotalPrice() {
-            let total = 0;
-
-            $(".cartView").each(function () {
-                let checkbox = $(this).find("input[type='checkbox']");
-
-                if (checkbox.is(":checked")) {
-                    let priceText = $(this).find("td").eq(5).text(); // 상품금액 셀 (₩12,000 등)
-                    let price = parseInt(priceText.replace(/[^\d]/g, '')); // ₩, , 제거하고 숫자만 추출
-                    total += price;
-                }
-            });
-
-            // 총액 업데이트
-            $("#selectedTotal").text("₩" + total.toLocaleString());
-        }
-
-        // 페이지 로드 시 초기 총액 계산
-        updateTotalPrice();
-    });
+	});
 </script>
 </html>
