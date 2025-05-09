@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class FileManager {
 
-	public static final String FILE_UPLOAD_PATH = "E:\\kamii\\project\\upload\\gingstyle";
+	public static final String FILE_UPLOAD_PATH = "/home/ec2-user/upload/gingstyle";
 	
 	// 파일 저장 기능
 	public static String saveFile(MultipartFile file) {
