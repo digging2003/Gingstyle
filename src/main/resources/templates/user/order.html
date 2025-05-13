@@ -73,23 +73,6 @@
                         </p>
                     </div>
 
-                    <!-- 청구 주소 -->
-                    <h5 class="fw-bold mt-5 mb-3">청구 주소</h5>
-                    <div class="border rounded p-3 mb-4">
-                        <div class="form-check mb-2">
-                            <input class="form-check-input" type="radio" name="billingAddress" id="sameAsShipping" checked>
-                            <label class="form-check-label" for="sameAsShipping">
-                                배송 주소와 같음
-                            </label>
-                        </div>
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="billingAddress" id="useDifferent">
-                            <label class="form-check-label" for="useDifferent">
-                                다른 청구 주소 사용
-                            </label>
-                        </div>
-                    </div>
-
                     <!-- Pay now 버튼 -->
                     <button type="button" id="orderBtn" class="btn btn-paynow w-100 py-3 fw-bold">Pay now</button>
                 </div>
@@ -105,7 +88,7 @@
 	                            
 	                            <small>수량:<span th:text="${item.quantity}">수량</span></small>
 	                            
-	                            <div th:text="'₩' + ${#numbers.formatInteger(item.price, 3, 'COMMA')}" class="ms-auto">상품가격</div>
+	                            <div th:text="'₩' + ${#numbers.formatInteger(item.totalPrice, 3, 'COMMA')}" class="ms-auto">상품가격</div>
 	                        </div>
 	        
 	                        <hr>
