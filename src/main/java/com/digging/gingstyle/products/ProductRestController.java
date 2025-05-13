@@ -24,58 +24,18 @@ public class ProductRestController {
 	// 관리자 관련 - 제품 등록 API
 	@PostMapping("/product/create")
 	public Map<String, String> createProduct(
-			@RequestParam String name
-			, @RequestParam String discription
-			, @RequestParam(required=false) int beforePrice
-			, @RequestParam int price
-			, @RequestParam int stock
-			, @RequestParam int categoryId) {
-		
-		Map<String, String> resultMap = new HashMap<>();
-		
-		if(productService.addProduct(name, discription, beforePrice, price, stock, categoryId)) {
-			// 성공
-			resultMap.put("result", "success");
-		} else {
-			// 실패
-			resultMap.put("result", "fail");
-		}
-		
-		return resultMap;
-	}
-	
-	// 관리자 관련 - 제품 등록 API
-	@PostMapping("/product/create")
-	public Map<String, String> createProduct(
 	    @RequestParam String name,
-	    @RequestParam String discription,
+	    @RequestParam String description,
 	    @RequestParam(required = false, defaultValue = "0") int beforePrice,
 	    @RequestParam int price,
 	    @RequestParam int stock,
 	    @RequestParam int categoryId,
 	    @RequestParam MultipartFile[] productImages) {
-	    int productId = productService.addProductAndImages(name, discription, beforePrice, price, stock, categoryId, productImages);
-
-	    Map<String, String> resultMap = new HashMap<>();
-	    
-	    if (productId > 0) {
-	        resultMap.put("result", "success");
-	        resultMap.put("productId", String.valueOf(productId));
-	    } else {
-	        resultMap.put("result", "fail");
-	    }
-	    return resultMap;
-	}
-	
-	// 관리자 관련 - 제품 사진 등록 API
-	@PostMapping("/product/create/image")
-	public Map<String, String> createProduct(
-			@RequestParam int productId
-			, @RequestParam MultipartFile imagePath) {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productService.addImage(productId, imagePath)) {
+	    int productId = productService.addProduct(name, description, beforePrice, price, stock, categoryId);
+		if(productService.addImages(productId, productImages) ) {
 			// 성공
 			resultMap.put("result", "success");
 		} else {
@@ -84,6 +44,7 @@ public class ProductRestController {
 		}
 		
 		return resultMap;
+		
 	}
 	
 	
@@ -92,15 +53,15 @@ public class ProductRestController {
 	public Map<String, String> updatePost(
 			@RequestParam int id
 			, @RequestParam String name
-			, @RequestParam String discription
-			, @RequestParam int beforePrice
+			, @RequestParam String description
+			, @RequestParam(required = false, defaultValue = "0") int beforePrice
 			, @RequestParam int price
 			, @RequestParam int stock
 			, @RequestParam int categoryId) {
 		
 		Map<String, String> resultMap = new HashMap<>();
 		
-		if(productService.updateProduct(id, name, discription, beforePrice, price, stock, categoryId)) {
+		if(productService.updateProduct(id, name, description, beforePrice, price, stock, categoryId)) {
 			resultMap.put("result", "success");
 		} else {
 			resultMap.put("result", "fail");

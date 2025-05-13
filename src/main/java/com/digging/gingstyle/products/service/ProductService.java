@@ -33,11 +33,11 @@ public class ProductService {
 	}
 	
 	// 관리자 관련 - 제품 이미지 등록 API
-    public boolean addImages(int productId, List<MultipartFile> images) {
+    public boolean addImages(int productId, MultipartFile[] images) {
         try {
-            for (int i = 0; i < images.size(); i++) {
-                MultipartFile file = images.get(i);
-                String savedPath = FileManager.saveFile(file); // 예시용 가짜 메서드
+            for (int i = 0; i < images.length; i++) {
+                MultipartFile file = images[i];
+                String savedPath = FileManager.saveFile(file);
 
                 Image image = Image.builder()
                         .productId(productId)
@@ -54,7 +54,7 @@ public class ProductService {
     }
 	
 	// 관리자 관련 - 제품 등록 API
-	public boolean addProduct(
+	public int addProduct(
 			String name
 			, String description
 			, int beforePrice
@@ -74,10 +74,10 @@ public class ProductService {
 		try {
 			productRepository.save(product);
 		} catch(PersistenceException e) {
-			return false;
+			return 0;
 		}
 		
-		return true;
+		return product.getId();
 		
 		
 	}
