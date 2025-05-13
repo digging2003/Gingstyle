@@ -20,6 +20,12 @@ public class AdminController {
 		return "admin/product";
 	}
 	
+	// 상품 추가
+	@GetMapping("/product/add")
+	public String addProduct() {
+		return "admin/product-add";
+	}
+	
 	// 주문 관리
 	@GetMapping("/order")
 	public String order() {

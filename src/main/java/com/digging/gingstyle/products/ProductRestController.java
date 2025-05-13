@@ -44,6 +44,29 @@ public class ProductRestController {
 		return resultMap;
 	}
 	
+	// 관리자 관련 - 제품 등록 API
+	@PostMapping("/product/create")
+	public Map<String, String> createProduct(
+	    @RequestParam String name,
+	    @RequestParam String discription,
+	    @RequestParam(required = false, defaultValue = "0") int beforePrice,
+	    @RequestParam int price,
+	    @RequestParam int stock,
+	    @RequestParam int categoryId,
+	    @RequestParam MultipartFile[] productImages) {
+	    int productId = productService.addProductAndImages(name, discription, beforePrice, price, stock, categoryId, productImages);
+
+	    Map<String, String> resultMap = new HashMap<>();
+	    
+	    if (productId > 0) {
+	        resultMap.put("result", "success");
+	        resultMap.put("productId", String.valueOf(productId));
+	    } else {
+	        resultMap.put("result", "fail");
+	    }
+	    return resultMap;
+	}
+	
 	// 관리자 관련 - 제품 사진 등록 API
 	@PostMapping("/product/create/image")
 	public Map<String, String> createProduct(

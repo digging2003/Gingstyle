@@ -21,7 +21,7 @@ public class Detail {
 	private int categoryId;
 	
 	// 상품 상세페이지에 필요한 정보
-	private String discription;
+	private String description;
 	private int stock;
 	
 	

@@ -28,6 +28,7 @@ public class Image {
 	
 	private int productId;
 	private String imagePath;
+	private int sortOrder;
 
 	@CreationTimestamp
 	private LocalDateTime createdAt;

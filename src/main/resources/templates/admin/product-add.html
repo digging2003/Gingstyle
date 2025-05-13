@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/admin}">
+
+<main layout:fragment="contents" class="content">
+  <section class="admin-section p-4">
+    <h3 class="mb-4">상품 등록</h3>
+    <form th:action="@{/admin/product/save}" method="post" enctype="multipart/form-data">
+      <div class="mb-3">
+        <label class="form-label">상품명</label>
+        <input type="text" class="form-control" name="name" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">설명</label>
+        <textarea id="description" name="description"></textarea>
+      </div>
+
+      <div class="row mb-3">
+        <div class="col">
+          <label class="form-label">할인 전 가격</label>
+          <input type="number" class="form-control" name="originalPrice">
+        </div>
+        <div class="col">
+          <label class="form-label">판매 가격</label>
+          <input type="number" class="form-control" name="price" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">재고</label>
+        <input type="number" class="form-control" name="stock" required>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">카테고리</label>
+        <select name="category" class="form-select" required>
+          <option value="outers">OUTERS</option>
+          <option value="top">TOP</option>
+          <option value="bottom">BOTTOM</option>
+          <option value="dresses">DRESSES</option>
+        </select>
+      </div>
+
+		<!-- 이미지 업로드 및 프리뷰 영역 -->
+		<div class="mb-3">
+		  <label class="form-label">상품 이미지 (맨 앞을 대표이미지로 설정)</label>
+		  <input type="file" class="form-control" id="productImages" accept="image/*" multiple>
+		  <input type="hidden" name="imageOrderJson" id="imageOrderJson">
+		  <div id="imagePreviewContainer" class="mt-3 d-flex flex-wrap gap-2"></div>
+		</div>
+
+      <div class="text-end">
+        <button type="submit" class="btn btn-primary">저장</button>
+        <a href="/admin/product/list" class="btn btn-secondary">취소</a>
+      </div>
+    </form>
+  </section>
+</main>
+
+
+<script layout:fragment="script">
+$(document).ready(function () {
+  $('#description').summernote({
+    height: 200
+  });
+
+  let imageFiles = [];
+
+  $('#productImages').on('change', function () {
+    const files = this.files;
+    const $container = $('#imagePreviewContainer');
+    $container.empty();
+    imageFiles = [];
+
+    Array.from(files).forEach((file, index) => {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imgWrapper = $(`
+          <div class="sortable-image text-center" style="position:relative;">
+            <img src="${e.target.result}" class="img-thumbnail" style="height:100px;">
+            <input type="hidden" name="productImages" data-index="${index}">
+          </div>
+        `);
+        $container.append(imgWrapper);
+      };
+      reader.readAsDataURL(file);
+      imageFiles.push(file);
+    });
+  });
+
+  // 이미지 순서 바꾸기
+  $("#imagePreviewContainer").sortable({
+    update: function () {
+      // 순서 바뀔 때마다 순서를 기록
+      const newOrder = [];
+      $('#imagePreviewContainer .sortable-image').each(function () {
+        const index = $(this).find('input').data('index');
+        newOrder.push(index);
+      });
+      $('#imageOrderJson').val(JSON.stringify(newOrder));
+    }
+  });
+
+  // 전송 시 순서 유지
+  $('form').on('submit', function (e) {
+    const newOrder = [];
+    $('#imagePreviewContainer .sortable-image').each(function () {
+      const index = $(this).find('input').data('index');
+      newOrder.push(index);
+    });
+    $('#imageOrderJson').val(JSON.stringify(newOrder));
+
+    const dt = new DataTransfer();
+    newOrder.forEach(idx => dt.items.add(imageFiles[idx]));
+    $('#productImages')[0].files = dt.files;
+  });
+});
+</script>
+
+</html>

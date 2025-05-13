@@ -28,7 +28,7 @@ public class Product {
 	private int id;
 	
 	private String name;
-	private String discription;
+	private String description;
 	private Integer beforePrice; 
 	private int price;
 	private int stock;
@@ -49,7 +49,7 @@ public class Product {
 	}
 
 	public void setDiscription(String discription) {
-		this.discription = discription;
+		this.description = discription;
 	}
 
 	public void setBeforePrice(int beforePrice) {

@@ -33,30 +33,30 @@ public class ProductService {
 	}
 	
 	// 관리자 관련 - 제품 이미지 등록 API
-	public boolean addImage(
-			int productId
-			, MultipartFile imageFile) {
-		
-		String imagePath = FileManager.saveFile(imageFile);
-		
-		Image image = Image.builder()
-				.productId(productId)
-				.imagePath(imagePath)
-				.build();
-		
-		try {
-			imageRepository.save(image);
-		} catch(PersistenceException e) {
-			return false;
-		}
-		
-		return true;
-	}
+    public boolean addImages(int productId, List<MultipartFile> images) {
+        try {
+            for (int i = 0; i < images.size(); i++) {
+                MultipartFile file = images.get(i);
+                String savedPath = FileManager.saveFile(file); // 예시용 가짜 메서드
+
+                Image image = Image.builder()
+                        .productId(productId)
+                        .imagePath(savedPath)
+                        .sortOrder(i)
+                        .build();
+
+                imageRepository.save(image);
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 	
 	// 관리자 관련 - 제품 등록 API
 	public boolean addProduct(
 			String name
-			, String discription
+			, String description
 			, int beforePrice
 			, int price
 			, int stock
@@ -64,7 +64,7 @@ public class ProductService {
 		
 		Product product = Product.builder()
 				.name(name)
-				.discription(discription)
+				.description(description)
 				.beforePrice(beforePrice)
 				.price(price)
 				.stock(stock)
@@ -87,7 +87,7 @@ public class ProductService {
 	public boolean updateProduct(
 			int id
 			, String name
-			, String discription
+			, String description
 			, int beforePrice
 			, int price
 			, int stock
@@ -100,7 +100,7 @@ public class ProductService {
 			
 			products = products.toBuilder()
 				.name(name)
-				.discription(discription)
+				.description(description)
 				.beforePrice(beforePrice)
 				.price(price)
 				.stock(stock)
@@ -196,7 +196,7 @@ public class ProductService {
 					.imageList(imageList)
 					.mainImagePath(mainImagePath)
 					.categoryId(product.getCategoryId())
-					.discription(product.getDiscription())
+					.description(product.getDescription())
 					.stock(product.getStock())
 					.build();
 			
@@ -222,7 +222,7 @@ public class ProductService {
 				.imageList(imageList)
 				.mainImagePath(mainImagePath)
 				.categoryId(product.getCategoryId())
-				.discription(product.getDiscription())
+				.description(product.getDescription())
 				.stock(product.getStock())
 				.build();
 		
