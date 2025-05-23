@@ -24,9 +24,9 @@
 		        </thead>
 		        <tbody>
 		            <tr th:each="detail:${detailList}">
-		                <td>예시 상품 A</td>
-		                <td>₩20,000</td>
-		                <td>50개</td>
+		                <td th:text="${detail.name}">예시 상품 A</td>
+		                <td th:text="${detail.price}">₩20,000</td>
+		                <td th:text="${detail.stock}">50개</td>
 		                <td>판매중</td>
 		                <td><button class="btn btn-sm btn-outline-primary">수정</button></td>
 		            </tr>

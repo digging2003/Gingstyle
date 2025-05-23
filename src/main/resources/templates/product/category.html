@@ -16,7 +16,7 @@
             <div class="row g-2">
                 <div class="col-md-3 col-sm-6 text-center" th:each="detail:${detailList}">
                 <a th:href="@{/product/detail(productId = ${detail.productId})}">
-                    <img src="${detail.mainImagePath}" class="img-fluid" th:alt="${detail.name}">
+                    <img th:src="${detail.mainImagePath}" class="img-fluid" th:alt="${detail.name}">
                     <div class="product-text">
                     	<span th:text="${detail.name}">상품이름</span>
                     	<br>
